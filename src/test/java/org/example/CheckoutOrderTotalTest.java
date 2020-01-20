@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class CheckoutOrderTotalTest {
-
     @Test
     public void canAddSingleItemToInventory() {
         CheckoutOrderTotal checkoutOrderTotal = new CheckoutOrderTotal();
