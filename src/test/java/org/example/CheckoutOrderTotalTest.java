@@ -26,4 +26,14 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItem("Soup");
         Assert.assertEquals(1.0, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
+
+    @Test
+    public void canScanMultipleItems() {
+        this.checkoutOrderTotal.addItemToInventory("Soup", 1.0);
+        this.checkoutOrderTotal.addItemToInventory("Ketchup", 3.0);
+        this.checkoutOrderTotal.addItem("Soup");
+        this.checkoutOrderTotal.addItem("Ketchup");
+        this.checkoutOrderTotal.addItem("Soup");
+        Assert.assertEquals(5.0, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+    }
 }
