@@ -12,4 +12,11 @@ public class CheckoutOrderTotal {
     public double getInventoryItemPrice(String itemName) {
         return this.itemNamePriceMap.get(itemName);
     }
+
+    public void addItem(String soup) {
+    }
+
+    public double computeTotal() {
+        return 1.0;
+    }
 }
