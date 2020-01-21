@@ -45,6 +45,13 @@ public class CheckoutOrderTotal {
         inventoryItem.setSpecial(new SpecialBuyNGetMAtXOff(prerequisiteCount, specialCount, discount));
     }
 
+    public void addNForXSpecial(String name, int count, double price) {
+        if (name == null) throw new IllegalArgumentException("Name cannot be empty");
+        if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
+        InventoryItem inventoryItem = this.inventoryItems.get(name);
+        inventoryItem.setSpecial(new SpecialBuyNForX(count, price));
+    }
+
     public void addItemToOrder(String name) {
         this.addItemToOrder(name, 1.0);
     }
