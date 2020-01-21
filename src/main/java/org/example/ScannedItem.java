@@ -5,15 +5,16 @@ public class ScannedItem {
     private double quantity;
 
     public ScannedItem(InventoryItem inventoryItem, double quantity) {
-        this.inventoryItem = inventoryItem;
-        this.quantity = quantity;
+        this.setInventoryItem(inventoryItem);
+        this.setQuantity(quantity);
     }
 
     public InventoryItem getInventoryItem() {
-        return inventoryItem;
+        return this.inventoryItem;
     }
 
     public void setInventoryItem(InventoryItem inventoryItem) {
+        if (inventoryItem == null) throw new IllegalArgumentException("Inventory item cannot be empty");
         this.inventoryItem = inventoryItem;
     }
 

@@ -12,16 +12,17 @@ public class InventoryItem {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
+        if (name == null) throw new IllegalArgumentException("Name cannot be empty");
         if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
         this.name = name.trim();
     }
 
     public double getPrice() {
-        return price;
+        return this.price;
     }
 
     public void setPrice(double price) {
