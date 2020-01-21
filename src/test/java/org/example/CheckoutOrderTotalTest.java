@@ -50,7 +50,7 @@ public class CheckoutOrderTotalTest {
     @Test
     public void canAddBuyThreeGetTwoAt30PercentOffSpecial() {
         this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
-        this.checkoutOrderTotal.addBuyNGetMAtXOff("Soup", 3, 2, 0.30);
+        this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Soup", 3, 2, 0.30);
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 1.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 2.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 3.00
@@ -68,7 +68,7 @@ public class CheckoutOrderTotalTest {
     @Test
     public void canAddBuyOneGetOneFreeSpecial() {
         this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
-        this.checkoutOrderTotal.addBuyNGetMAtXOff("Soup", 1, 1, 1.00);
+        this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Soup", 1, 1, 1.00);
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 1.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.00, total 1.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 2.00
@@ -82,7 +82,7 @@ public class CheckoutOrderTotalTest {
     @Test
     public void canAddBuyTwoGetOneHalfOffSpecial() {
         this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
-        this.checkoutOrderTotal.addBuyNGetMAtXOff("Soup", 2, 1, 0.50);
+        this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Soup", 2, 1, 0.50);
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 1.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 2.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.50, total 2.50

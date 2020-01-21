@@ -36,7 +36,7 @@ public class CheckoutOrderTotal {
         inventoryItem.setSpecial(new SpecialMarkdown(markdown));
     }
 
-    public void addBuyNGetMAtXOff(String name, int prerequisiteCount, int specialCount, double discount) {
+    public void addBuyNGetMAtXOffSpecial(String name, int prerequisiteCount, int specialCount, double discount) {
         if (name == null) throw new IllegalArgumentException("Name cannot be empty");
         if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
         InventoryItem inventoryItem = this.inventoryItems.get(name);
