@@ -23,4 +23,11 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItem("Soup");
         Assert.assertEquals(5.0, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
+
+    @Test
+    public void canScanSingleByWeightItem() {
+        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.5);
+        this.checkoutOrderTotal.addItem("Ground Beef", 1.5);
+        Assert.assertEquals(6.75, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+    }
 }
