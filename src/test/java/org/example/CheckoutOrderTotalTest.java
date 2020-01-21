@@ -46,4 +46,18 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup");
         Assert.assertEquals(8.7, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
+
+    @Test
+    public void canAddBuyThreeGetTwoAt30PercentOff() {
+        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addBuyNGetMAtXOff("Soup", 3, 2, 0.30);
+        this.checkoutOrderTotal.addItemToOrder("Soup");
+        this.checkoutOrderTotal.addItemToOrder("Soup");
+        this.checkoutOrderTotal.addItemToOrder("Soup");
+        this.checkoutOrderTotal.addItemToOrder("Soup");
+        this.checkoutOrderTotal.addItemToOrder("Soup");
+        this.checkoutOrderTotal.addItemToOrder("Soup");
+        this.checkoutOrderTotal.addItemToOrder("Soup");
+        Assert.assertEquals(8.7, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+    }
 }
