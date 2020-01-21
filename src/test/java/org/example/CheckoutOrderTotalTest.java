@@ -92,4 +92,18 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 6.00
         Assert.assertEquals(6.00, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
+
+    @Test
+    public void canAdd3For5Special() {
+        this.checkoutOrderTotal.addItemToInventory("Soup", 3.00);
+        this.checkoutOrderTotal.addNForXSpecial("Soup", 3, 5.00);
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 0.60
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 1.20
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 1.80
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 2.40
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 3.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 3.60
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 4.20
+        Assert.assertEquals(4.20, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+    }
 }
