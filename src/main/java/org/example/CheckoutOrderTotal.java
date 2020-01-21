@@ -16,6 +16,11 @@ public class CheckoutOrderTotal {
         return this.inventoryItems.get(name).getPrice();
     }
 
+    public void addMarkdownToInventoryItem(String name, double markdown) {
+        InventoryItem inventoryItem = this.inventoryItems.get(name);
+        inventoryItem.setMarkdown(markdown);
+    }
+
     public void addItemToOrder(String name) {
         this.addItemToOrder(name, 1.0);
     }
@@ -29,7 +34,8 @@ public class CheckoutOrderTotal {
         double total = 0.0;
 
         for (ScannedItem scannedItem : this.scannedItems) {
-            total += scannedItem.getQuantity() * scannedItem.getInventoryItem().getPrice();
+            total += scannedItem.getQuantity() *
+                    (scannedItem.getInventoryItem().getPrice() - scannedItem.getInventoryItem().getMarkdown());
         }
 
         return total;
