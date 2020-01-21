@@ -18,16 +18,18 @@ public class CheckoutOrderTotalTest {
     public void canScanMultipleItems() {
         this.checkoutOrderTotal.addItemToInventory("Soup", 1.0);
         this.checkoutOrderTotal.addItemToInventory("Ketchup", 3.0);
-        this.checkoutOrderTotal.addItem("Soup");
-        this.checkoutOrderTotal.addItem("Ketchup");
-        this.checkoutOrderTotal.addItem("Soup");
+        this.checkoutOrderTotal.addItemToOrder("Soup");
+        this.checkoutOrderTotal.addItemToOrder("Ketchup");
+        this.checkoutOrderTotal.addItemToOrder("Soup");
         Assert.assertEquals(5.0, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
-    public void canScanSingleByWeightItem() {
+    public void canScanMultipleByWeightItem() {
         this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.5);
-        this.checkoutOrderTotal.addItem("Ground Beef", 1.5);
-        Assert.assertEquals(6.75, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        this.checkoutOrderTotal.addItemToInventory("Bananas", 0.60);
+        this.checkoutOrderTotal.addItemToOrder("Ground Beef", 1.5);
+        this.checkoutOrderTotal.addItemToOrder("Bananas", 1.2);
+        Assert.assertEquals(7.47, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 }

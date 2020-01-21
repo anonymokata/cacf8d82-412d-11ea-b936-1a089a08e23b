@@ -8,20 +8,20 @@ public class CheckoutOrderTotal {
     private HashMap<String, InventoryItem> inventoryItems = new HashMap<>();
     private List<ScannedItem> scannedItems = new ArrayList<>();
 
-    public void addItemToInventory(String itemName, double itemPrice) {
-        this.inventoryItems.put(itemName, new InventoryItem(itemName, itemPrice));
+    public void addItemToInventory(String name, double price) {
+        this.inventoryItems.put(name, new InventoryItem(name, price));
     }
 
-    public double getInventoryItemPrice(String itemName) {
-        return this.inventoryItems.get(itemName).getPrice();
+    public double getInventoryItemPrice(String name) {
+        return this.inventoryItems.get(name).getPrice();
     }
 
-    public void addItem(String itemName) {
-        this.addItem(itemName, 1.0);
+    public void addItemToOrder(String name) {
+        this.addItemToOrder(name, 1.0);
     }
 
-    public void addItem(String itemName, double quantity) {
-        InventoryItem inventoryItem = this.inventoryItems.get(itemName);
+    public void addItemToOrder(String name, double quantity) {
+        InventoryItem inventoryItem = this.inventoryItems.get(name);
         this.scannedItems.add(new ScannedItem(inventoryItem, quantity));
     }
 
