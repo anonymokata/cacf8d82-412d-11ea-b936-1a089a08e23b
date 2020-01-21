@@ -44,20 +44,24 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Ketchup");
         this.checkoutOrderTotal.addItemToOrder("Mayo");
         this.checkoutOrderTotal.addItemToOrder("Soup");
-        Assert.assertEquals(8.7, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(8.70, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
     public void canAddBuyThreeGetTwoAt30PercentOff() {
         this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
         this.checkoutOrderTotal.addBuyNGetMAtXOff("Soup", 3, 2, 0.30);
-        this.checkoutOrderTotal.addItemToOrder("Soup");
-        this.checkoutOrderTotal.addItemToOrder("Soup");
-        this.checkoutOrderTotal.addItemToOrder("Soup");
-        this.checkoutOrderTotal.addItemToOrder("Soup");
-        this.checkoutOrderTotal.addItemToOrder("Soup");
-        this.checkoutOrderTotal.addItemToOrder("Soup");
-        this.checkoutOrderTotal.addItemToOrder("Soup");
-        Assert.assertEquals(8.7, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 1.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 2.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 3.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.70, total 3.70
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.70, total 4.40
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 5.40
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 6.40
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 7.40
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.70, total 8.10
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.70, total 8.80
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 9.80
+        Assert.assertEquals(9.80, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 }

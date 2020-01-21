@@ -32,7 +32,17 @@ public class CheckoutOrderTotal {
         if (name == null) throw new IllegalArgumentException("Name cannot be empty");
         if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
         InventoryItem inventoryItem = this.inventoryItems.get(name);
-        inventoryItem.setMarkdown(markdown);
+        if (markdown > inventoryItem.getPrice()) throw new IllegalArgumentException("Markdown cannot exceed price");
+        inventoryItem.setSpecial(new SpecialMarkdown(markdown));
+    }
+
+    public void addBuyNGetMAtXOff(String name, int prerequisiteCount, int specialCount, double discount) {
+        if (name == null) throw new IllegalArgumentException("Name cannot be empty");
+        if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
+        InventoryItem inventoryItem = this.inventoryItems.get(name);
+        if ((discount > 1.0) || (discount < 0.0))
+            throw new IllegalArgumentException("Discount must be between 0% to 100%");
+        inventoryItem.setSpecial(new SpecialBuyNGetMAtXOff(prerequisiteCount, specialCount, discount));
     }
 
     public void addItemToOrder(String name) {
@@ -49,10 +59,13 @@ public class CheckoutOrderTotal {
 
     public double computeTotal() {
         double total = 0.0;
+        HashMap<InventoryItem, Integer> itemCount = new HashMap<>();
 
         for (ScannedItem scannedItem : this.scannedItems) {
+            InventoryItem inventoryItem = scannedItem.getInventoryItem();
+            itemCount.put(inventoryItem, itemCount.getOrDefault(inventoryItem, 0) + 1);
             double quantity = scannedItem.getQuantity();
-            double finalPrice = scannedItem.getInventoryItem().getPrice() - scannedItem.getInventoryItem().getMarkdown();
+            double finalPrice = inventoryItem.getSpecial().getSpecialPrice(scannedItem, itemCount.get(inventoryItem));
             total += quantity * finalPrice;
         }
 

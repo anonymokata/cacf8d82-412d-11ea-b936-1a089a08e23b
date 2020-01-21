@@ -3,12 +3,12 @@ package org.example;
 public class InventoryItem {
     private String name;
     private double price;
-    private double markdown;
+    private Special special;
 
     public InventoryItem(String name, double price) {
         this.setName(name);
         this.setPrice(price);
-        this.setMarkdown(0.00);
+        this.setSpecial(new SpecialNone());
     }
 
     public String getName() {
@@ -30,12 +30,11 @@ public class InventoryItem {
         this.price = price;
     }
 
-    public double getMarkdown() {
-        return this.markdown;
+    public Special getSpecial() {
+        return this.special;
     }
 
-    public void setMarkdown(double markdown) {
-        if (markdown > price) throw new IllegalArgumentException("Markdown cannot exceed price");
-        this.markdown = markdown;
+    public void setSpecial(Special special) {
+        this.special = special;
     }
 }
