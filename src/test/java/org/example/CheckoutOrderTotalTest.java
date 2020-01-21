@@ -36,8 +36,14 @@ public class CheckoutOrderTotalTest {
     @Test
     public void canAddMarkdown() {
         this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addItemToInventory("Ketchup", 3.00);
+        this.checkoutOrderTotal.addItemToInventory("Mayo", 5.00);
         this.checkoutOrderTotal.addMarkdownToInventoryItem("Soup", 0.20);
+        this.checkoutOrderTotal.addMarkdownToInventoryItem("Ketchup", 0.90);
         this.checkoutOrderTotal.addItemToOrder("Soup");
-        Assert.assertEquals(0.80, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        this.checkoutOrderTotal.addItemToOrder("Ketchup");
+        this.checkoutOrderTotal.addItemToOrder("Mayo");
+        this.checkoutOrderTotal.addItemToOrder("Soup");
+        Assert.assertEquals(8.7, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 }
