@@ -9,27 +9,35 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAddMultipleItemsToInventory() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 1.0);
-        this.checkoutOrderTotal.addItemToInventory("Ketchup", 3.0);
-        Assert.assertEquals(3.0, this.checkoutOrderTotal.getInventoryItemPrice("Ketchup"), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addItemToInventory("Ketchup", 3.00);
+        Assert.assertEquals(3.00, this.checkoutOrderTotal.getInventoryItemPrice("Ketchup"), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
     public void canScanMultipleItems() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 1.0);
-        this.checkoutOrderTotal.addItemToInventory("Ketchup", 3.0);
+        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addItemToInventory("Ketchup", 3.00);
         this.checkoutOrderTotal.addItemToOrder("Soup");
         this.checkoutOrderTotal.addItemToOrder("Ketchup");
         this.checkoutOrderTotal.addItemToOrder("Soup");
-        Assert.assertEquals(5.0, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(5.00, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
     public void canScanMultipleByWeightItem() {
-        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.5);
+        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.50);
         this.checkoutOrderTotal.addItemToInventory("Bananas", 0.60);
         this.checkoutOrderTotal.addItemToOrder("Ground Beef", 1.5);
         this.checkoutOrderTotal.addItemToOrder("Bananas", 1.2);
         Assert.assertEquals(7.47, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+    }
+
+    @Test
+    public void canAddMarkdown() {
+        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addMarkdownToInventoryItem("Soup", 0.20);
+        this.checkoutOrderTotal.addItemToOrder("Soup");
+        Assert.assertEquals(0.80, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 }
