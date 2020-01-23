@@ -8,47 +8,39 @@ public class CheckoutOrderTotal {
     private HashMap<String, InventoryItem> inventoryItems = new HashMap<>();
     private List<ScannedItem> scannedItems = new ArrayList<>();
 
-    public void addItemToInventory(String name, double price) {
-        if (name == null) throw new IllegalArgumentException("Name cannot be empty");
-        if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
+    public void addItemToInventory(String name, double pricePerUnit) {
+        InventoryItem.validateName(name);
+        InventoryItem.validatePrice(pricePerUnit);
         if (this.inventoryItems.containsKey(name))
             throw new IllegalArgumentException(name + " already exists in the inventory");
-        this.inventoryItems.put(name, new InventoryItem(name, price));
+        this.inventoryItems.put(name, new InventoryItem(name, pricePerUnit));
     }
 
     private InventoryItem getInventoryItem(String name) {
-        if (name == null) throw new IllegalArgumentException("Name cannot be empty");
-        if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
+        InventoryItem.validateName(name);
         if (!this.inventoryItems.containsKey(name))
             throw new IllegalArgumentException(name + " doesn't exist in the inventory");
         return this.inventoryItems.get(name);
     }
 
     public double getInventoryItemPrice(String name) {
-        return this.getInventoryItem(name).getPrice();
+        return this.getInventoryItem(name).getPricePerUnit();
     }
 
     public void addMarkdownToInventoryItem(String name, double markdown) {
-        if (name == null) throw new IllegalArgumentException("Name cannot be empty");
-        if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
-        InventoryItem inventoryItem = this.inventoryItems.get(name);
-        if (markdown > inventoryItem.getPrice()) throw new IllegalArgumentException("Markdown cannot exceed price");
+        InventoryItem inventoryItem = this.getInventoryItem(name);
+        if (markdown > inventoryItem.getPricePerUnit())
+            throw new IllegalArgumentException("Markdown cannot exceed price");
         inventoryItem.setSpecial(new SpecialMarkdown(markdown));
     }
 
     public void addBuyNGetMAtXOffSpecial(String name, int prerequisiteCount, int specialCount, double discount) {
-        if (name == null) throw new IllegalArgumentException("Name cannot be empty");
-        if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
-        InventoryItem inventoryItem = this.inventoryItems.get(name);
-        if ((discount > 1.0) || (discount < 0.0))
-            throw new IllegalArgumentException("Discount must be between 0% to 100%");
+        InventoryItem inventoryItem = this.getInventoryItem(name);
         inventoryItem.setSpecial(new SpecialBuyNGetMAtXOff(prerequisiteCount, specialCount, discount));
     }
 
     public void addNForXSpecial(String name, int count, double price) {
-        if (name == null) throw new IllegalArgumentException("Name cannot be empty");
-        if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
-        InventoryItem inventoryItem = this.inventoryItems.get(name);
+        InventoryItem inventoryItem = this.getInventoryItem(name);
         inventoryItem.setSpecial(new SpecialBuyNForX(count, price));
     }
 
@@ -57,22 +49,23 @@ public class CheckoutOrderTotal {
     }
 
     public void addItemToOrder(String name, double quantity) {
-        if (name == null) throw new IllegalArgumentException("Name cannot be empty");
-        if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
-        if (quantity <= 0) throw new IllegalArgumentException("Quantity cannot be zero or negative");
+        if (quantity <= 0.0) throw new IllegalArgumentException("Quantity must be greater than zero");
         InventoryItem inventoryItem = this.getInventoryItem(name);
         this.scannedItems.add(new ScannedItem(inventoryItem, quantity));
     }
 
     public double computeTotal() {
         double total = 0.0;
-        HashMap<InventoryItem, Integer> itemCount = new HashMap<>();
+        HashMap<InventoryItem, Integer> scannedItemSequenceNumber = new HashMap<>();
 
+        // Go through all scanned items, assign a sequence number for all scanned items that belong to the same
+        // inventory item, compute the special, multiply by the quantity, and accumulate the total
         for (ScannedItem scannedItem : this.scannedItems) {
             InventoryItem inventoryItem = scannedItem.getInventoryItem();
-            itemCount.put(inventoryItem, itemCount.getOrDefault(inventoryItem, 0) + 1);
+            int sequenceNumber = scannedItemSequenceNumber.getOrDefault(inventoryItem, 0) + 1;
+            scannedItemSequenceNumber.put(inventoryItem, sequenceNumber);
             double quantity = scannedItem.getQuantity();
-            double finalPrice = inventoryItem.getSpecial().getSpecialPrice(scannedItem, itemCount.get(inventoryItem));
+            double finalPrice = inventoryItem.getSpecial().computeSpecialPrice(scannedItem, sequenceNumber);
             total += quantity * finalPrice;
         }
 

@@ -2,13 +2,22 @@ package org.example;
 
 public class InventoryItem {
     private String name;
-    private double price;
+    private double pricePerUnit;
     private Special special;
 
-    public InventoryItem(String name, double price) {
+    public InventoryItem(String name, double pricePerUnit) {
         this.setName(name);
-        this.setPrice(price);
+        this.setPricePerUnit(pricePerUnit);
         this.setSpecial(new SpecialNone());
+    }
+
+    public static void validateName(String name) {
+        if (name == null) throw new IllegalArgumentException("Name cannot be empty");
+        if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
+    }
+
+    public static void validatePrice(double pricePerUnit) {
+        if (pricePerUnit < 0) throw new IllegalArgumentException("Price per-unit must be greater than zero");
     }
 
     public String getName() {
@@ -16,18 +25,17 @@ public class InventoryItem {
     }
 
     public void setName(String name) {
-        if (name == null) throw new IllegalArgumentException("Name cannot be empty");
-        if (name.trim().length() == 0) throw new IllegalArgumentException("Name cannot be empty");
+        InventoryItem.validateName(name);
         this.name = name.trim();
     }
 
-    public double getPrice() {
-        return this.price;
+    public double getPricePerUnit() {
+        return this.pricePerUnit;
     }
 
-    public void setPrice(double price) {
-        if (price < 0) throw new IllegalArgumentException("Price cannot be less than 0");
-        this.price = price;
+    public void setPricePerUnit(double pricePerUnit) {
+        if (pricePerUnit < 0) throw new IllegalArgumentException("Price cannot be less than 0");
+        this.pricePerUnit = pricePerUnit;
     }
 
     public Special getSpecial() {

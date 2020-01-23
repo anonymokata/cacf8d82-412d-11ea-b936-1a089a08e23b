@@ -19,7 +19,7 @@ public class ScannedItem {
     }
 
     public double getQuantity() {
-        return quantity;
+        return this.quantity;
     }
 
     public void setQuantity(double quantity) {

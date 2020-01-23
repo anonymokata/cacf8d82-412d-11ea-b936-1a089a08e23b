@@ -12,12 +12,13 @@ public class SpecialMarkdown implements Special {
     }
 
     public void setMarkdown(double markdown) {
+        if (markdown <= 0) throw new IllegalArgumentException("Markdown must be greater than zero");
         this.markdown = markdown;
     }
 
     @Override
-    public double getSpecialPrice(ScannedItem scannedItem, int scannedItemOrderCount) {
-        // Count doesn't apply to this discount. All items are discounted.
-        return scannedItem.getInventoryItem().getPrice() - this.markdown;
+    public double computeSpecialPrice(ScannedItem scannedItem, int scannedItemSequenceNumber) {
+        // All items are discounted by markdown. Their sequence number doesn't make a difference.
+        return scannedItem.getInventoryItem().getPricePerUnit() - this.markdown;
     }
 }
