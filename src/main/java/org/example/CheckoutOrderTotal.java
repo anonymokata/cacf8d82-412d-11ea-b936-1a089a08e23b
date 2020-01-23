@@ -52,14 +52,23 @@ public class CheckoutOrderTotal {
         this.addNForXSpecial(name, count, price, 0);
     }
 
-    public void addItemToOrder(String name) {
-        this.addItemToOrder(name, 1.0);
-    }
-
     public void addItemToOrder(String name, double quantity) {
         if (quantity <= 0.0) throw new IllegalArgumentException("Quantity must be greater than zero");
         InventoryItem inventoryItem = this.getInventoryItem(name);
         this.scannedItems.add(new ScannedItem(inventoryItem, quantity));
+    }
+
+    public void addItemToOrder(String name) {
+        this.addItemToOrder(name, 1.0);
+    }
+
+    public void removeItemFromOrder(int itemNumber) {
+        // Item number starts at 1, convert that to index
+        int itemIndex = itemNumber - 1;
+        if (itemIndex < 0) throw new IllegalArgumentException("Item number must be greater than 1");
+        if (itemIndex >= this.scannedItems.size())
+            throw new IllegalArgumentException("Item number is not in the checkout order");
+        this.scannedItems.remove(itemIndex);
     }
 
     public double computeTotal() {

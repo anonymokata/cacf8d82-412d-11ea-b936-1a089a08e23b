@@ -151,8 +151,7 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 2.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.50, total 2.50
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.50, total 3.00
-        this.checkoutOrderTotal.removeItemFromOrder("Soup"); // Item price 0.50, total 2.50
-        Assert.assertEquals(2.0, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        this.checkoutOrderTotal.removeItemFromOrder(1); // Item price 0.50, total 2.50
+        Assert.assertEquals(2.5, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
-
 }
