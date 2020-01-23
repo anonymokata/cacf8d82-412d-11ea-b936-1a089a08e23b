@@ -126,4 +126,20 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 11.00
         Assert.assertEquals(11.00, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
+
+    @Test
+    public void canAdd3For5Limit6Special() {
+        this.checkoutOrderTotal.addItemToInventory("Soup", 3.00);
+        this.checkoutOrderTotal.addNForXSpecial("Soup", 3, 5.00, 6);
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // 1, Item price 0.60, total 0.60
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // 2, Item price 0.60, total 1.20
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // 3, Item price 0.60, total 1.80
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // 4, Item price 0.60, total 2.40
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // 5, Item price 0.60, total 3.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // 6, Item price 0.60, total 3.60
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // 7, Item price 3.00, total 6.60
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // 8, Item price 3.00, total 9.60
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // 9, Item price 3.00, total 12.60
+        Assert.assertEquals(12.60, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+    }
 }
