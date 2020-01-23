@@ -43,9 +43,13 @@ public class CheckoutOrderTotal {
         this.addBuyNGetMAtXOffSpecial(name, prerequisiteCount, specialCount, discount, 0);
     }
 
-    public void addNForXSpecial(String name, int count, double price) {
+    public void addNForXSpecial(String name, int count, double price, int limit) {
         InventoryItem inventoryItem = this.getInventoryItem(name);
-        inventoryItem.setSpecial(new SpecialBuyNForX(count, price));
+        inventoryItem.setSpecial(new SpecialBuyNForX(count, price, limit));
+    }
+
+    public void addNForXSpecial(String name, int count, double price) {
+        this.addNForXSpecial(name, count, price, 0);
     }
 
     public void addItemToOrder(String name) {
