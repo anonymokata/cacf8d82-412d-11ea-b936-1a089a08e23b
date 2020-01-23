@@ -106,4 +106,23 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 4.20
         Assert.assertEquals(4.20, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
+
+    @Test
+    public void canAddBuyTwoGetOneFreeLimitSixSpecial() {
+        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Soup", 2, 1, 1.00, 6);
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 1.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 2.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.00, total 2.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 3.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 4.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.00, total 5.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 6.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 7.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 8.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 9.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 10.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 11.00
+        Assert.assertEquals(11.00, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+    }
 }
