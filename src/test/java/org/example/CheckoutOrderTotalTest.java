@@ -116,7 +116,8 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.00, total 2.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 3.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 4.00
-        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.00, total 5.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.00, total 4.00
+        this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 5.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 6.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 7.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 8.00
