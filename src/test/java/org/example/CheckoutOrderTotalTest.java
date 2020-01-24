@@ -154,4 +154,12 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.removeItemFromOrder(1); // Item price 0.50, total 2.50
         Assert.assertEquals(2.5, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
+
+    @Test
+    public void canAddBuy2PoundsGet1PoundHalfOffSpecial() {
+        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.00, true);
+        this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Ground Beef", 2, 1, 0.50);
+        this.checkoutOrderTotal.addItemToOrder("Ground Beef", 3.0);
+        Assert.assertEquals(10.0, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+    }
 }
