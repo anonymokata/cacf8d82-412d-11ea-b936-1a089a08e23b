@@ -2,8 +2,8 @@ package org.example;
 
 public class SpecialNone implements Special {
     @Override
-    public double computeSpecialPrice(ScannedItem scannedItem, int scannedItemSequenceNumber) {
-        // No special. Return the per-unit price
-        return scannedItem.getInventoryItem().getPricePerUnit();
+    public double computeSpecialPrice(InventoryItem inventoryItem, double totalQuantity) {
+        // No special. Return the per-unit price.
+        return totalQuantity * inventoryItem.getPrice();
     }
 }

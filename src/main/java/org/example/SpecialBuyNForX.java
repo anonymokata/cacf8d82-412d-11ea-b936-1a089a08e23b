@@ -47,14 +47,13 @@ public class SpecialBuyNForX implements Special {
     }
 
     @Override
-    public double computeSpecialPrice(ScannedItem scannedItem, int scannedItemSequenceNumber) {
-        if ((scannedItemSequenceNumber > this.limit) && (this.limit > 0)) {
-            // Once limit is exceed, full per-unit price is used.
-            // Limit equal is zero means there is no limit
-            return scannedItem.getInventoryItem().getPricePerUnit();
-        } else {
-            // Simply return the effective price (count / total). Sequence number does't affect this special.
-            return this.effectivePrice;
-        }
+    public double computeSpecialPrice(InventoryItem inventoryItem, double totalQuantity) {
+        double discountedQuantity = (this.limit > 0) ? Math.min(totalQuantity, this.limit) : totalQuantity;
+        double fullPriceQuantity = totalQuantity - discountedQuantity;
+        double specialPrice = (fullPriceQuantity * inventoryItem.getPrice()) +
+                (discountedQuantity * this.effectivePrice);
+        // Round down to the nearest cent
+        specialPrice = Math.floor(specialPrice * 100.0) / 100.00;
+        return specialPrice;
     }
 }

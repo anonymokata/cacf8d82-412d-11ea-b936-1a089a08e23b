@@ -3,17 +3,23 @@ package org.example;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CheckoutOrderTotal {
     private HashMap<String, InventoryItem> inventoryItems = new HashMap<>();
     private List<ScannedItem> scannedItems = new ArrayList<>();
+    private HashMap<InventoryItem, Double> scannedItemTotalQuantityMap = new HashMap<>();
 
-    public void addItemToInventory(String name, double pricePerUnit) {
+    public void addItemToInventory(String name, double price, boolean soldByWeight) {
         InventoryItem.validateName(name);
-        InventoryItem.validatePrice(pricePerUnit);
+        InventoryItem.validatePrice(price);
         if (this.inventoryItems.containsKey(name))
             throw new IllegalArgumentException(name + " already exists in the inventory");
-        this.inventoryItems.put(name, new InventoryItem(name, pricePerUnit));
+        this.inventoryItems.put(name, new InventoryItem(name, price, soldByWeight));
+    }
+
+    public void addItemToInventory(String name, double price) {
+        this.addItemToInventory(name, price, false);
     }
 
     private InventoryItem getInventoryItem(String name) {
@@ -24,12 +30,12 @@ public class CheckoutOrderTotal {
     }
 
     public double getInventoryItemPrice(String name) {
-        return this.getInventoryItem(name).getPricePerUnit();
+        return this.getInventoryItem(name).getPrice();
     }
 
     public void addMarkdownToInventoryItem(String name, double markdown) {
         InventoryItem inventoryItem = this.getInventoryItem(name);
-        if (markdown > inventoryItem.getPricePerUnit())
+        if (markdown > inventoryItem.getPrice())
             throw new IllegalArgumentException("Markdown cannot exceed price");
         inventoryItem.setSpecial(new SpecialMarkdown(markdown));
     }
@@ -55,7 +61,13 @@ public class CheckoutOrderTotal {
     public void addItemToOrder(String name, double quantity) {
         if (quantity <= 0.0) throw new IllegalArgumentException("Quantity must be greater than zero");
         InventoryItem inventoryItem = this.getInventoryItem(name);
-        this.scannedItems.add(new ScannedItem(inventoryItem, quantity));
+        if ((!inventoryItem.isSoldByWeight()) && ((quantity % 1.0) != 0))
+            throw new IllegalArgumentException("Pre-unit items must have discrete quantities");
+        ScannedItem scannedItem = new ScannedItem(inventoryItem, quantity);
+        this.scannedItems.add(scannedItem);
+        double totalQuantity = this.scannedItemTotalQuantityMap.getOrDefault(scannedItem.getInventoryItem(), 0.0) +
+                scannedItem.getQuantity();
+        this.scannedItemTotalQuantityMap.put(inventoryItem, totalQuantity);
     }
 
     public void addItemToOrder(String name) {
@@ -68,22 +80,26 @@ public class CheckoutOrderTotal {
         if (itemIndex < 0) throw new IllegalArgumentException("Item number must be greater than 1");
         if (itemIndex >= this.scannedItems.size())
             throw new IllegalArgumentException("Item number is not in the checkout order");
+        ScannedItem scannedItem = this.scannedItems.get(itemIndex);
+        double totalQuantity = this.scannedItemTotalQuantityMap.get(scannedItem.getInventoryItem()) -
+                scannedItem.getQuantity();
         this.scannedItems.remove(itemIndex);
+        if (totalQuantity > 0.0) {
+            this.scannedItemTotalQuantityMap.put(scannedItem.getInventoryItem(), totalQuantity);
+        } else {
+            this.scannedItemTotalQuantityMap.remove(scannedItem.getInventoryItem());
+        }
     }
 
     public double computeTotal() {
         double total = 0.0;
-        HashMap<InventoryItem, Integer> scannedItemSequenceNumber = new HashMap<>();
 
         // Go through all scanned items, assign a sequence number for all scanned items that belong to the same
         // inventory item, compute the special, multiply by the quantity, and accumulate the total
-        for (ScannedItem scannedItem : this.scannedItems) {
-            InventoryItem inventoryItem = scannedItem.getInventoryItem();
-            int sequenceNumber = scannedItemSequenceNumber.getOrDefault(inventoryItem, 0) + 1;
-            scannedItemSequenceNumber.put(inventoryItem, sequenceNumber);
-            double quantity = scannedItem.getQuantity();
-            double finalPrice = inventoryItem.getSpecial().computeSpecialPrice(scannedItem, sequenceNumber);
-            total += quantity * finalPrice;
+        for (Map.Entry<InventoryItem, Double> entry : this.scannedItemTotalQuantityMap.entrySet()) {
+            InventoryItem inventoryItem = entry.getKey();
+            Double totalQuantity = entry.getValue();
+            total += inventoryItem.getSpecial().computeSpecialPrice(inventoryItem, totalQuantity);
         }
 
         return total;

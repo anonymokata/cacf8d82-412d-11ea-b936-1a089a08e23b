@@ -17,8 +17,8 @@ public class SpecialMarkdown implements Special {
     }
 
     @Override
-    public double computeSpecialPrice(ScannedItem scannedItem, int scannedItemSequenceNumber) {
-        // All items are discounted by markdown. Their sequence number doesn't make a difference.
-        return scannedItem.getInventoryItem().getPricePerUnit() - this.markdown;
+    public double computeSpecialPrice(InventoryItem inventoryItem, double totalQuantity) {
+        // All items are discounted by markdown.
+        return totalQuantity * (inventoryItem.getPrice() - this.markdown);
     }
 }

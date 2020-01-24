@@ -26,8 +26,8 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canScanMultipleByWeightItem() {
-        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.50);
-        this.checkoutOrderTotal.addItemToInventory("Bananas", 0.60);
+        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.50, true);
+        this.checkoutOrderTotal.addItemToInventory("Bananas", 0.60, true);
         this.checkoutOrderTotal.addItemToOrder("Ground Beef", 1.5);
         this.checkoutOrderTotal.addItemToOrder("Bananas", 1.2);
         Assert.assertEquals(7.47, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);

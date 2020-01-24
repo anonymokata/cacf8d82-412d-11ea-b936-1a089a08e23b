@@ -2,13 +2,19 @@ package org.example;
 
 public class InventoryItem {
     private String name;
-    private double pricePerUnit;
+    private double price;
+    private boolean soldByWeight;
     private Special special;
 
-    public InventoryItem(String name, double pricePerUnit) {
+    public InventoryItem(String name, double price, boolean soldByWeight, Special special) {
         this.setName(name);
-        this.setPricePerUnit(pricePerUnit);
-        this.setSpecial(new SpecialNone());
+        this.setPrice(price);
+        this.setSoldByWeight(soldByWeight);
+        this.setSpecial(special);
+    }
+
+    public InventoryItem(String name, double price, boolean soldByWeight) {
+        this(name, price, soldByWeight, new SpecialNone());
     }
 
     public static void validateName(String name) {
@@ -29,13 +35,21 @@ public class InventoryItem {
         this.name = name.trim();
     }
 
-    public double getPricePerUnit() {
-        return this.pricePerUnit;
+    public double getPrice() {
+        return this.price;
     }
 
-    public void setPricePerUnit(double pricePerUnit) {
-        if (pricePerUnit < 0) throw new IllegalArgumentException("Price cannot be less than 0");
-        this.pricePerUnit = pricePerUnit;
+    public void setPrice(double price) {
+        if (price < 0) throw new IllegalArgumentException("Price cannot be less than 0");
+        this.price = price;
+    }
+
+    public boolean isSoldByWeight() {
+        return this.soldByWeight;
+    }
+
+    public void setSoldByWeight(boolean soldByWeight) {
+        this.soldByWeight = soldByWeight;
     }
 
     public Special getSpecial() {
