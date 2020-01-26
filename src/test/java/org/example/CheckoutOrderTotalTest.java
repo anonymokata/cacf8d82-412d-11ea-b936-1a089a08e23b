@@ -162,4 +162,28 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Ground Beef", 3.0);
         Assert.assertEquals(10.0, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
+
+    @Test
+    public void canAddBuy2PoundsGet1PoundHalfOffSpecialWith4Pounds() {
+        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.00, true);
+        this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Ground Beef", 2, 1, 0.50);
+        this.checkoutOrderTotal.addItemToOrder("Ground Beef", 4.0);
+        Assert.assertEquals(14.0, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+    }
+
+    @Test
+    public void canAddBuy2PoundsGet1PoundHalfOffSpecialWith5Pounds() {
+        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.00, true);
+        this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Ground Beef", 2, 1, 0.50);
+        this.checkoutOrderTotal.addItemToOrder("Ground Beef", 5.0);
+        Assert.assertEquals(18.0, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+    }
+
+    @Test
+    public void canAddBuy2PoundsGet1PoundHalfOffSpecialWith6Pounds() {
+        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.00, true);
+        this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Ground Beef", 2, 1, 0.50);
+        this.checkoutOrderTotal.addItemToOrder("Ground Beef", 6.0);
+        Assert.assertEquals(20.0, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+    }
 }
