@@ -6,16 +6,7 @@ public class InventoryItem {
     private boolean soldByWeight;
     private Special special;
 
-    public InventoryItem(String name, double price, boolean soldByWeight, Special special) {
-        this.setName(name);
-        this.setPrice(price);
-        this.setSoldByWeight(soldByWeight);
-        this.setSpecial(special);
-    }
-
     public InventoryItem(String name, double price, boolean soldByWeight) {
-        // Cannot call generic constructor because a reference to this is needed to constructor a special but this
-        // has not completed construction.
         this.setName(name);
         this.setPrice(price);
         this.setSoldByWeight(soldByWeight);

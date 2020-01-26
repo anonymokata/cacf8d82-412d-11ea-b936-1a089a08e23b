@@ -11,7 +11,7 @@ public class CheckoutOrderTotal {
     private HashMap<InventoryItem, Double> scannedItemTotalQuantityMap = new HashMap<>();
     private double total;
 
-    public void addItemToInventory(String name, double price, boolean soldByWeight) {
+    private void addItemToInventory(String name, double price, boolean soldByWeight) {
         InventoryItem.validateName(name);
         InventoryItem.validatePrice(price);
         if (this.inventoryItems.containsKey(name))
@@ -19,8 +19,11 @@ public class CheckoutOrderTotal {
         this.inventoryItems.put(name, new InventoryItem(name, price, soldByWeight));
     }
 
-    public void addItemToInventory(String name, double price) {
-        //  If sold by weight is not specified, the item is sold per-unit.
+    public void addSoldByWeightItemToInventory(String name, double price) {
+        this.addItemToInventory(name, price, true);
+    }
+
+    public void addSoldPerUnitItemToInventory(String name, double price) {
         this.addItemToInventory(name, price, false);
     }
 

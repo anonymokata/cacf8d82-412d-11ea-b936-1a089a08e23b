@@ -9,15 +9,15 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAddMultipleItemsToInventory() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
-        this.checkoutOrderTotal.addItemToInventory("Ketchup", 3.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Ketchup", 3.00);
         Assert.assertEquals(3.00, this.checkoutOrderTotal.getInventoryItemPrice("Ketchup"), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
     public void canScanMultipleItems() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
-        this.checkoutOrderTotal.addItemToInventory("Ketchup", 3.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Ketchup", 3.00);
         this.checkoutOrderTotal.addItemToOrder("Soup");
         this.checkoutOrderTotal.addItemToOrder("Ketchup");
         this.checkoutOrderTotal.addItemToOrder("Soup");
@@ -26,8 +26,8 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canScanMultipleByWeightItem() {
-        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.50, true);
-        this.checkoutOrderTotal.addItemToInventory("Bananas", 0.60, true);
+        this.checkoutOrderTotal.addSoldByWeightItemToInventory("Ground Beef", 4.50);
+        this.checkoutOrderTotal.addSoldByWeightItemToInventory("Bananas", 0.60);
         this.checkoutOrderTotal.addItemToOrder("Ground Beef", 1.5);
         this.checkoutOrderTotal.addItemToOrder("Bananas", 1.2);
         Assert.assertEquals(7.47, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
@@ -35,9 +35,9 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAddMarkdown() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
-        this.checkoutOrderTotal.addItemToInventory("Ketchup", 3.00);
-        this.checkoutOrderTotal.addItemToInventory("Mayo", 5.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Ketchup", 3.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Mayo", 5.00);
         this.checkoutOrderTotal.addMarkdownToInventoryItem("Soup", 0.20);
         this.checkoutOrderTotal.addMarkdownToInventoryItem("Ketchup", 0.90);
         this.checkoutOrderTotal.addItemToOrder("Soup");
@@ -49,7 +49,7 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAddBuyThreeGetTwoAt30PercentOffSpecial() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Soup", 1.00);
         this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Soup", 3, 2, 0.30);
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 1.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 2.00
@@ -67,7 +67,7 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAddBuyOneGetOneFreeSpecial() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Soup", 1.00);
         this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Soup", 1, 1, 1.00);
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 1.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.00, total 1.00
@@ -81,7 +81,7 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAddBuyTwoGetOneHalfOffSpecial() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Soup", 1.00);
         this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Soup", 2, 1, 0.50);
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 1.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 2.00
@@ -95,7 +95,7 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAdd3For5Special() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 3.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Soup", 3.00);
         this.checkoutOrderTotal.addNForXSpecial("Soup", 3, 5.00);
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 0.60
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 1.20
@@ -109,7 +109,7 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAddBuyTwoGetOneFreeLimitSixSpecial() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Soup", 1.00);
         this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Soup", 2, 1, 1.00, 6);
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 1.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 2.00
@@ -129,7 +129,7 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAdd3For5Limit6Special() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 3.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Soup", 3.00);
         this.checkoutOrderTotal.addNForXSpecial("Soup", 3, 5.00, 6);
         this.checkoutOrderTotal.addItemToOrder("Soup"); // 1, Item price 0.60, total 0.60
         this.checkoutOrderTotal.addItemToOrder("Soup"); // 2, Item price 0.60, total 1.20
@@ -145,7 +145,7 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canRemoveScannedItemWithSpecial() {
-        this.checkoutOrderTotal.addItemToInventory("Soup", 1.00);
+        this.checkoutOrderTotal.addSoldPerUnitItemToInventory("Soup", 1.00);
         this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Soup", 2, 2, 0.50);
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 1.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 2.00
@@ -157,7 +157,7 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAddBuy2PoundsGet1PoundHalfOffSpecial() {
-        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.00, true);
+        this.checkoutOrderTotal.addSoldByWeightItemToInventory("Ground Beef", 4.00);
         this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Ground Beef", 2, 1, 0.50);
         this.checkoutOrderTotal.addItemToOrder("Ground Beef", 3.0);
         Assert.assertEquals(10.0, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
@@ -165,7 +165,7 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAddBuy2PoundsGet1PoundHalfOffSpecialWith4Pounds() {
-        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.00, true);
+        this.checkoutOrderTotal.addSoldByWeightItemToInventory("Ground Beef", 4.00);
         this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Ground Beef", 2, 1, 0.50);
         this.checkoutOrderTotal.addItemToOrder("Ground Beef", 4.0);
         Assert.assertEquals(14.0, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
@@ -173,7 +173,7 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAddBuy2PoundsGet1PoundHalfOffSpecialWith5Pounds() {
-        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.00, true);
+        this.checkoutOrderTotal.addSoldByWeightItemToInventory("Ground Beef", 4.00);
         this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Ground Beef", 2, 1, 0.50);
         this.checkoutOrderTotal.addItemToOrder("Ground Beef", 5.0);
         Assert.assertEquals(18.0, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
@@ -181,7 +181,7 @@ public class CheckoutOrderTotalTest {
 
     @Test
     public void canAddBuy2PoundsGet1PoundHalfOffSpecialWith6Pounds() {
-        this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.00, true);
+        this.checkoutOrderTotal.addSoldByWeightItemToInventory("Ground Beef", 4.00);
         this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Ground Beef", 2, 1, 0.50);
         this.checkoutOrderTotal.addItemToOrder("Ground Beef", 6.0);
         Assert.assertEquals(20.0, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
