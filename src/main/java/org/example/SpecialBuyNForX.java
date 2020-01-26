@@ -1,57 +1,58 @@
 package org.example;
 
-public class SpecialBuyNForX implements Special {
-    private int count;
-    private double total;
-    private int limit;
-    private double effectivePrice;
+public class SpecialBuyNForX extends Special {
+    private double count;
+    private double totalPrice;
+    private double limitCount;
+    private double specialPrice;
 
-    public SpecialBuyNForX(int count, double total, int limit) {
+    public SpecialBuyNForX(InventoryItem inventoryItem, double count, double totalPrice, double limitCount) {
+        super(inventoryItem);
         this.setCount(count);
-        this.setTotal(total);
-        this.setLimit(limit);
+        this.setTotalPrice(totalPrice);
+        this.setLimitCount(limitCount);
     }
 
-    public int getCount() {
+    public double getCount() {
         return this.count;
     }
 
-    public void setCount(int count) {
-        if (count <= 0) throw new IllegalArgumentException("Count must be greater than zero");
+    public void setCount(double count) {
+        if (count <= 0.0) throw new IllegalArgumentException("Count must be greater than zero");
         this.count = count;
         this.computeEffectivePrice();
     }
 
-    public double getTotal() {
-        return this.total;
+    public double getTotalPrice() {
+        return this.totalPrice;
     }
 
-    public void setTotal(double total) {
-        if (total <= 0) throw new IllegalArgumentException("Total must be greater than zero");
-        this.total = total;
+    public void setTotalPrice(double totalPrice) {
+        if (totalPrice <= 0.0) throw new IllegalArgumentException("Total must be greater than zero");
+        this.totalPrice = totalPrice;
         this.computeEffectivePrice();
     }
 
-    public int getLimit() {
-        return this.limit;
+    public double getLimitCount() {
+        return this.limitCount;
     }
 
-    public void setLimit(int limit) {
-        if (limit < 0) throw new IllegalArgumentException("Limit must be greater or equal to zero");
-        this.limit = limit;
+    public void setLimitCount(double limitCount) {
+        if (limitCount < 0.0) throw new IllegalArgumentException("Limit must be greater or equal to zero");
+        this.limitCount = limitCount;
     }
 
     private void computeEffectivePrice() {
         // Round down to the nearest cent. Protect against division by zero that can occur as the object is constructed.
-        if (this.total > 0) this.effectivePrice = Math.floor((this.count / this.total) * 100.0) / 100.00;
+        if (this.totalPrice > 0.0) this.specialPrice = Math.floor((this.count / this.totalPrice) * 100.0) / 100.00;
     }
 
     @Override
-    public double computeSpecialPrice(InventoryItem inventoryItem, double totalQuantity) {
-        double discountedQuantity = (this.limit > 0) ? Math.min(totalQuantity, this.limit) : totalQuantity;
-        double fullPriceQuantity = totalQuantity - discountedQuantity;
-        double specialPrice = (fullPriceQuantity * inventoryItem.getPrice()) +
-                (discountedQuantity * this.effectivePrice);
+    public double computeSpecialPrice(double totalQuantityInOrder) {
+        double discountedQuantity = Math.min(totalQuantityInOrder, this.limitCount);
+        double fullPriceQuantity = totalQuantityInOrder - discountedQuantity;
+        double specialPrice = (fullPriceQuantity * this.inventoryItem.getPrice()) +
+                (discountedQuantity * this.specialPrice);
         // Round down to the nearest cent
         specialPrice = Math.floor(specialPrice * 100.0) / 100.00;
         return specialPrice;

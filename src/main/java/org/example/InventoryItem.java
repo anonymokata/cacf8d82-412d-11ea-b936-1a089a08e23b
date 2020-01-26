@@ -14,7 +14,12 @@ public class InventoryItem {
     }
 
     public InventoryItem(String name, double price, boolean soldByWeight) {
-        this(name, price, soldByWeight, new SpecialNone());
+        // Cannot call generic constructor because a reference to this is needed to constructor a special but this
+        // has not completed construction.
+        this.setName(name);
+        this.setPrice(price);
+        this.setSoldByWeight(soldByWeight);
+        this.setSpecial(new SpecialNone(this));
     }
 
     public static void validateName(String name) {
@@ -23,7 +28,7 @@ public class InventoryItem {
     }
 
     public static void validatePrice(double pricePerUnit) {
-        if (pricePerUnit < 0) throw new IllegalArgumentException("Price per-unit must be greater than zero");
+        if (pricePerUnit < 0.0) throw new IllegalArgumentException("Price per-unit must be greater than zero");
     }
 
     public String getName() {
@@ -40,7 +45,7 @@ public class InventoryItem {
     }
 
     public void setPrice(double price) {
-        if (price < 0) throw new IllegalArgumentException("Price cannot be less than 0");
+        if (price < 0.0) throw new IllegalArgumentException("Price cannot be less than 0");
         this.price = price;
     }
 
@@ -57,6 +62,7 @@ public class InventoryItem {
     }
 
     public void setSpecial(Special special) {
+        if (special == null) throw new IllegalArgumentException("Special cannot be null");
         this.special = special;
     }
 }

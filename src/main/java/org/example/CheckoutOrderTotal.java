@@ -9,6 +9,7 @@ public class CheckoutOrderTotal {
     private HashMap<String, InventoryItem> inventoryItems = new HashMap<>();
     private List<ScannedItem> scannedItems = new ArrayList<>();
     private HashMap<InventoryItem, Double> scannedItemTotalQuantityMap = new HashMap<>();
+    private double total;
 
     public void addItemToInventory(String name, double price, boolean soldByWeight) {
         InventoryItem.validateName(name);
@@ -19,6 +20,7 @@ public class CheckoutOrderTotal {
     }
 
     public void addItemToInventory(String name, double price) {
+        //  If sold by weight is not specified, the item is sold per-unit.
         this.addItemToInventory(name, price, false);
     }
 
@@ -37,29 +39,32 @@ public class CheckoutOrderTotal {
         InventoryItem inventoryItem = this.getInventoryItem(name);
         if (markdown > inventoryItem.getPrice())
             throw new IllegalArgumentException("Markdown cannot exceed price");
-        inventoryItem.setSpecial(new SpecialMarkdown(markdown));
+        inventoryItem.setSpecial(new SpecialMarkdown(inventoryItem, markdown));
+        this.computeTotal();
     }
 
-    public void addBuyNGetMAtXOffSpecial(String name, int prerequisiteCount, int specialCount, double discount, int limit) {
+    public void addBuyNGetMAtXOffSpecial(String name, double prerequisiteCount, double specialCount, double specialOffRate, double limitCount) {
         InventoryItem inventoryItem = this.getInventoryItem(name);
-        inventoryItem.setSpecial(new SpecialBuyNGetMAtXOff(prerequisiteCount, specialCount, discount, limit));
+        inventoryItem.setSpecial(new SpecialBuyNGetMAtXOff(inventoryItem, prerequisiteCount, specialCount, specialOffRate, limitCount));
+        this.computeTotal();
     }
 
-    public void addBuyNGetMAtXOffSpecial(String name, int prerequisiteCount, int specialCount, double discount) {
-        this.addBuyNGetMAtXOffSpecial(name, prerequisiteCount, specialCount, discount, 0);
+    public void addBuyNGetMAtXOffSpecial(String name, double prerequisiteCount, double specialCount, double specialOffRate) {
+        this.addBuyNGetMAtXOffSpecial(name, prerequisiteCount, specialCount, specialOffRate, Double.MAX_VALUE);
     }
 
-    public void addNForXSpecial(String name, int count, double price, int limit) {
+    public void addNForXSpecial(String name, double count, double totalPrice, double limitCount) {
         InventoryItem inventoryItem = this.getInventoryItem(name);
-        inventoryItem.setSpecial(new SpecialBuyNForX(count, price, limit));
+        inventoryItem.setSpecial(new SpecialBuyNForX(inventoryItem, count, totalPrice, limitCount));
+        this.computeTotal();
     }
 
-    public void addNForXSpecial(String name, int count, double price) {
-        this.addNForXSpecial(name, count, price, 0);
+    public void addNForXSpecial(String name, int count, double totalPrice) {
+        this.addNForXSpecial(name, count, totalPrice, Double.MAX_VALUE);
     }
 
     public void addItemToOrder(String name, double quantity) {
-        if (quantity <= 0.0) throw new IllegalArgumentException("Quantity must be greater than zero");
+        ScannedItem.validateQuantity(quantity);
         InventoryItem inventoryItem = this.getInventoryItem(name);
         if ((!inventoryItem.isSoldByWeight()) && ((quantity % 1.0) != 0))
             throw new IllegalArgumentException("Pre-unit items must have discrete quantities");
@@ -68,6 +73,7 @@ public class CheckoutOrderTotal {
         double totalQuantity = this.scannedItemTotalQuantityMap.getOrDefault(scannedItem.getInventoryItem(), 0.0) +
                 scannedItem.getQuantity();
         this.scannedItemTotalQuantityMap.put(inventoryItem, totalQuantity);
+        this.computeTotal();
     }
 
     public void addItemToOrder(String name) {
@@ -89,19 +95,23 @@ public class CheckoutOrderTotal {
         } else {
             this.scannedItemTotalQuantityMap.remove(scannedItem.getInventoryItem());
         }
+        this.computeTotal();
     }
 
-    public double computeTotal() {
+    private void computeTotal() {
         double total = 0.0;
 
-        // Go through all scanned items, assign a sequence number for all scanned items that belong to the same
-        // inventory item, compute the special, multiply by the quantity, and accumulate the total
+        // Go through all scanned items, and accumulate prices based on items' special and price.
         for (Map.Entry<InventoryItem, Double> entry : this.scannedItemTotalQuantityMap.entrySet()) {
             InventoryItem inventoryItem = entry.getKey();
             Double totalQuantity = entry.getValue();
-            total += inventoryItem.getSpecial().computeSpecialPrice(inventoryItem, totalQuantity);
+            total += inventoryItem.getSpecial().computeSpecialPrice(totalQuantity);
         }
 
-        return total;
+        this.total = total;
+    }
+
+    public double getTotal() {
+        return this.total;
     }
 }

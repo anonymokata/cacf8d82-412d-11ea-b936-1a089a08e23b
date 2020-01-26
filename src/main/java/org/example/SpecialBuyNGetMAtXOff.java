@@ -1,16 +1,17 @@
 package org.example;
 
-public class SpecialBuyNGetMAtXOff implements Special {
+public class SpecialBuyNGetMAtXOff extends Special {
     private double prerequisiteCount;
     private double specialCount;
-    private double discount;
-    private double limit;
+    private double discountPercentage;
+    private double limitCount;
 
-    public SpecialBuyNGetMAtXOff(double prerequisiteCount, double specialCount, double specialOffRate, double limit) {
+    public SpecialBuyNGetMAtXOff(InventoryItem inventoryItem, double prerequisiteCount, double specialCount, double specialOffRate, double limitCount) {
+        super(inventoryItem);
         this.setPrerequisiteCount(prerequisiteCount);
         this.setSpecialCount(specialCount);
-        this.setDiscount(specialOffRate);
-        this.setLimit(limit);
+        this.setDiscountPercentage(specialOffRate);
+        this.setLimitCount(limitCount);
     }
 
     public double getPrerequisiteCount() {
@@ -32,28 +33,28 @@ public class SpecialBuyNGetMAtXOff implements Special {
         this.specialCount = specialCount;
     }
 
-    public double getDiscount() {
-        return this.discount;
+    public double getDiscountPercentage() {
+        return this.discountPercentage;
     }
 
-    public void setDiscount(double discount) {
-        if ((discount <= 0.0) || (discount > 1.00))
+    public void setDiscountPercentage(double discountPercentage) {
+        if ((discountPercentage <= 0.0) || (discountPercentage > 1.00))
             throw new IllegalArgumentException("Discount must be greater than 0% and less or equal to 100%");
-        this.discount = discount;
+        this.discountPercentage = discountPercentage;
     }
 
-    public double getLimit() {
-        return this.limit;
+    public double getLimitCount() {
+        return this.limitCount;
     }
 
-    public void setLimit(double limit) {
-        if (limit < 0.0) throw new IllegalArgumentException("Limit must be greater or equal to zero");
-        this.limit = limit;
+    public void setLimitCount(double limitCount) {
+        if (limitCount < 0.0) throw new IllegalArgumentException("Limit must be greater or equal to zero");
+        this.limitCount = limitCount;
     }
 
     @Override
-    public double computeSpecialPrice(InventoryItem inventoryItem, double totalQuantity) {
-        double limitedQuantity = (this.limit > 0.0) ? Math.min(totalQuantity, this.limit) : totalQuantity;
+    public double computeSpecialPrice(double totalQuantityInOrder) {
+        double limitedQuantity = Math.min(totalQuantityInOrder, this.limitCount);
         double discountedQuantity;
         if (inventoryItem.isSoldByWeight()) {
             discountedQuantity = (limitedQuantity / (this.prerequisiteCount + this.specialCount)) * this.specialCount;
@@ -61,9 +62,9 @@ public class SpecialBuyNGetMAtXOff implements Special {
             discountedQuantity = ((int) (limitedQuantity / (this.prerequisiteCount + this.specialCount))) * this.specialCount;
             discountedQuantity += Math.max(0, (limitedQuantity % (this.prerequisiteCount + this.specialCount)) - this.prerequisiteCount);
         }
-        double fullPriceQuantity = totalQuantity - discountedQuantity;
-        double specialPrice = (fullPriceQuantity * inventoryItem.getPrice()) +
-                (discountedQuantity * inventoryItem.getPrice() * (1.0 - this.discount));
+        double fullPriceQuantity = totalQuantityInOrder - discountedQuantity;
+        double specialPrice = (fullPriceQuantity * this.inventoryItem.getPrice()) +
+                (discountedQuantity * this.inventoryItem.getPrice() * (1.0 - this.discountPercentage));
         // Round down to the nearest cent
         specialPrice = Math.floor(specialPrice * 100.0) / 100.00;
         return specialPrice;

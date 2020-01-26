@@ -21,7 +21,7 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup");
         this.checkoutOrderTotal.addItemToOrder("Ketchup");
         this.checkoutOrderTotal.addItemToOrder("Soup");
-        Assert.assertEquals(5.00, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(5.00, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToInventory("Bananas", 0.60, true);
         this.checkoutOrderTotal.addItemToOrder("Ground Beef", 1.5);
         this.checkoutOrderTotal.addItemToOrder("Bananas", 1.2);
-        Assert.assertEquals(7.47, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(7.47, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Ketchup");
         this.checkoutOrderTotal.addItemToOrder("Mayo");
         this.checkoutOrderTotal.addItemToOrder("Soup");
-        Assert.assertEquals(8.70, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(8.70, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.70, total 8.10
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.70, total 8.80
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 9.80
-        Assert.assertEquals(9.80, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(9.80, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 3.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.00, total 3.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 4.00
-        Assert.assertEquals(4.00, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(4.00, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 4.50
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.50, total 5.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 6.00
-        Assert.assertEquals(6.00, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(6.00, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
@@ -104,7 +104,7 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 3.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 3.60
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.60, total 4.20
-        Assert.assertEquals(4.20, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(4.20, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
@@ -124,7 +124,7 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 9.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 10.00
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 1.00, total 11.00
-        Assert.assertEquals(11.00, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(11.00, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
@@ -140,7 +140,7 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // 7, Item price 3.00, total 6.60
         this.checkoutOrderTotal.addItemToOrder("Soup"); // 8, Item price 3.00, total 9.60
         this.checkoutOrderTotal.addItemToOrder("Soup"); // 9, Item price 3.00, total 12.60
-        Assert.assertEquals(12.60, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(12.60, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
@@ -152,7 +152,7 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.50, total 2.50
         this.checkoutOrderTotal.addItemToOrder("Soup"); // Item price 0.50, total 3.00
         this.checkoutOrderTotal.removeItemFromOrder(1); // Item price 0.50, total 2.50
-        Assert.assertEquals(2.5, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(2.5, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 
     @Test
@@ -160,6 +160,6 @@ public class CheckoutOrderTotalTest {
         this.checkoutOrderTotal.addItemToInventory("Ground Beef", 4.00, true);
         this.checkoutOrderTotal.addBuyNGetMAtXOffSpecial("Ground Beef", 2, 1, 0.50);
         this.checkoutOrderTotal.addItemToOrder("Ground Beef", 3.0);
-        Assert.assertEquals(10.0, this.checkoutOrderTotal.computeTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
+        Assert.assertEquals(10.0, this.checkoutOrderTotal.getTotal(), CheckoutOrderTotalTest.PRICE_MAX_DELTA);
     }
 }
