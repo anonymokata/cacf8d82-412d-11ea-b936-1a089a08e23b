@@ -1,12 +1,12 @@
 # Checkout Order Total Kata
 
 ## Overview
-This kata implements a simple point of sale system that calculates pre-tax total as items are scanned at checkout. The kata is implemented in Java. Gradle is used as the build tool.
+This kata implements a simple point of sale system that calculates pre-tax total as items are scanned at checkout. It's implemented in Java. Gradle is used as the build tool.
 
 ## Minimum System Requirements
 Java 8
 
-## How to Run Tests
+## How to Run the Tests
 From the command line, execute: `gradlew test`.
 
 Another option is to import the gradle project into a Java IDE such as Eclipse or IntelliJ Idea, and run tests from the IDE. 
@@ -18,10 +18,10 @@ Another option is to import the gradle project into a Java IDE such as Eclipse o
 
 ## Disclosure
 I spent time reading and learning about test-driven development. I watched parts of two courses on LinkedIn Learning. One course implemented a similar problem (point of sale system that calculates pre-tax total) in C++ (https://www.linkedin.com/learning/test-driven-development-in-c-plus-plus/overview-setup-and-the-first-test-case?autoplay=true). I decided to continue with this kata because:
-- I chose this kata and started to work it before I saw the course
-- The course didn't solve this kata, but it did gave me pointers
-- This kata is more complicated and has more use cases than the kata described in the course
-- My solution is more generic than the course's solution in regards to the various specials
+- I chose this kata and started to work it before I saw the course.
+- The course didn't solve this kata, but it did gave me pointers.
+- This kata is more complicated and has more use cases than the kata described in the course.
+- My solution is more generic than the course's solution in regards to the various specials.
 
 ## Problem
 You have been contracted to write part of a grocery point-of-sale system. Your job is to implement the business logic to calculate the pre-tax total price as items are scanned or entered at checkout.
