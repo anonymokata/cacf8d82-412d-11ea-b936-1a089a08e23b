@@ -55,13 +55,8 @@ public class SpecialBuyNGetMAtXOff extends Special {
     @Override
     public double computeSpecialPrice(double totalQuantityInOrder) {
         double limitedQuantity = Math.min(totalQuantityInOrder, this.limitCount);
-        double discountedQuantity;
-        if (inventoryItem.isSoldByWeight()) {
-            discountedQuantity = (limitedQuantity / (this.prerequisiteCount + this.specialCount)) * this.specialCount;
-        } else {
-            discountedQuantity = ((int) (limitedQuantity / (this.prerequisiteCount + this.specialCount))) * this.specialCount;
-            discountedQuantity += Math.max(0, (limitedQuantity % (this.prerequisiteCount + this.specialCount)) - this.prerequisiteCount);
-        }
+        double discountedQuantity = ((int) (limitedQuantity / (this.prerequisiteCount + this.specialCount))) * this.specialCount;
+        discountedQuantity += Math.max(0, (limitedQuantity % (this.prerequisiteCount + this.specialCount)) - this.prerequisiteCount);
         double fullPriceQuantity = totalQuantityInOrder - discountedQuantity;
         double specialPrice = (fullPriceQuantity * this.inventoryItem.getPrice()) +
                 (discountedQuantity * this.inventoryItem.getPrice() * (1.0 - this.discountPercentage));
